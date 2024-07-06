@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { fetchWeather } from "./api/fetchWeather";
+import "./index.css"
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -50,10 +51,10 @@ const App = () => {
   };
 
   return (
-    <div className="app-container">
-      <div className="search-container">
+    <div className="container mx-auto px-4 py-8">
+      <div className="mb-4">
         <input
-          className="search-input"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           type="text"
           placeholder="Enter city name..."
           value={cityName}
@@ -61,25 +62,25 @@ const App = () => {
           onKeyDown={onSearch}
         />
       </div>
-      {error && <div className="error-message">{error}</div>}
-      {loading && <div className="loading-message">Loading...</div>}
+      {error && <div className="text-red-500 mb-4">{error}</div>}
+      {loading && <div className="text-gray-600 mb-4">Loading...</div>}
       {weatherData && (
-        <div className="weather-container">
-          <h2 className="weather-location">
+        <div className="bg-white shadow-md rounded-lg p-6 mb-4">
+          <h2 className="text-2xl font-bold mb-4">
             {weatherData.location.name}, {weatherData.location.region},{" "}
             {weatherData.location.country}
           </h2>
-          <div className="weather-info">
-            <p>
+          <div className="space-y-2">
+            <p className="text-lg">
               Temperature: {celsius ? `${weatherData.current.temp_c} °C` : `${weatherData.current.temp_f} °F`}
             </p>
-            <div className="unit-toggle" onClick={toggleUnit}>
-              <span className={celsius ? "active" : ""}>Celsius</span> /
-              <span className={!celsius ? "active" : ""}>Fahrenheit</span>
+            <div className="flex items-center space-x-2 cursor-pointer" onClick={toggleUnit}>
+              <span className={`${celsius ? "font-bold" : ""}`}>Celsius</span> /
+              <span className={`${!celsius ? "font-bold" : ""}`}>Fahrenheit</span>
             </div>
             <p>Condition: {weatherData.current.condition.text}</p>
             <img
-              className="weather-icon"
+              className="w-16 h-16"
               src={weatherData.current.condition.icon}
               alt={weatherData.current.condition.text}
             />
@@ -90,17 +91,19 @@ const App = () => {
         </div>
       )}
       {!!cities.length && (
-        <div className="recent-cities">
-          <h3>Recently Searched</h3>
-          {cities.map((city) => (
-            <div
-              key={city}
-              className="recent-city"
-              onClick={() => selectCity(city)}
-            >
-              {city}
-            </div>
-          ))}
+        <div className="bg-gray-100 rounded-lg p-4">
+          <h3 className="text-xl font-semibold mb-2">Recently Searched</h3>
+          <div className="flex flex-wrap gap-2">
+            {cities.map((city) => (
+              <div
+                key={city}
+                className="bg-blue-500 text-white px-3 py-1 rounded-full cursor-pointer hover:bg-blue-600 transition-colors"
+                onClick={() => selectCity(city)}
+              >
+                {city}
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
